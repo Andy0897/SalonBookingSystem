@@ -1,0 +1,74 @@
+﻿@model SalonBookingSystem.Models.BeautyService
+
+<div class="container mt-5">
+
+	<div class="card shadow">
+
+		<div class="card-header bg-primary text-white">
+
+			<h3>Информация</h3>
+
+		</div>
+
+		<div class="card-body">
+
+			<dl class="row">
+
+				<dt class="col-sm-4">
+
+					Име
+
+				</dt>
+
+				<dd class="col-sm-8">
+
+					@Model.Name
+
+				</dd>
+
+				<dt class="col-sm-4">
+
+					Продължителност
+
+				</dt>
+
+				<dd class="col-sm-8">
+
+					@Model.DurationMinutes минути
+
+				</dd>
+
+				<dt class="col-sm-4">
+
+					Цена
+
+				</dt>
+
+				<dd class="col-sm-8">
+
+					@Model.Price лв.
+
+				</dd>
+
+			</dl>
+
+			<a asp-action="Edit"
+			   asp-route-id="@Model.Id"
+			   class="btn btn-warning">
+
+				Редакция
+
+			</a>
+
+			<a asp-action="Index"
+			   class="btn btn-secondary">
+
+				Назад
+
+			</a>
+
+		</div>
+
+	</div>
+
+</div>

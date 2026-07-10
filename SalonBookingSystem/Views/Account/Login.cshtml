@@ -1,0 +1,63 @@
+﻿@model SalonBookingSystem.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<div class="container mt-5" style="max-width:500px;">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">Вход</h3>
+        </div>
+
+        <div class="card-body">
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Success"]
+                </div>
+            }
+
+            <form asp-action="Login" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                    Вход
+                </button>
+
+            </form>
+
+            <hr />
+
+            <p class="text-center">
+                Нямате акаунт?
+                <a asp-action="Register">Регистрация</a>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
