@@ -23,6 +23,10 @@ builder.Services.AddScoped<IBeautyServiceRepository, BeautyServiceRepository>();
 
 builder.Services.AddScoped<IBeautyServiceService, BeautyServiceService>();
 
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options =>
 {

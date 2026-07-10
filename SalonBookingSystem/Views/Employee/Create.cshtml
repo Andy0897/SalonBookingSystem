@@ -1,0 +1,111 @@
+﻿@model SalonBookingSystem.Models.Employee
+
+@{
+    ViewData["Title"] = "Добавяне на служител";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>Добавяне на служител</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-controller="Employee" asp-action="Create">
+
+                <input type="hidden" asp-for="UserId" />
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Потребител
+
+                    </label>
+
+                    <input class="form-control"
+                           value="@Model.User.FirstName @Model.User.LastName"
+                           disabled />
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Specialty"></label>
+
+                    <input asp-for="Specialty"
+                           class="form-control" />
+
+                    <span asp-validation-for="Specialty"
+                          class="text-danger"></span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Description"></label>
+
+                    <textarea asp-for="Description"
+                              class="form-control">
+</textarea>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label asp-for="WorkStart"></label>
+
+                        <input asp-for="WorkStart"
+                               type="time"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="WorkEnd"></label>
+
+                        <input asp-for="WorkEnd"
+                               type="time"
+                               class="form-control" />
+
+                    </div>
+
+                </div>
+
+                <br />
+
+                <button class="btn btn-success">
+
+                    Запази
+
+                </button>
+
+                <a asp-controller="User"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+
+                    Назад
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}
