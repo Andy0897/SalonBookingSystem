@@ -24,8 +24,8 @@ namespace SalonBookingSystem.Models
 
 
         [Required(ErrorMessage = "Цената е задължителна.")]
-        [Range(typeof(decimal), "0.01", "10000",
-            ErrorMessage = "Цената трябва да бъде между 0.01 и 10000 лв.")]
+        [Range(typeof(decimal), "10", "10000",
+            ErrorMessage = "Цената трябва да бъде между 10 и 10000 лв.")]
         [Column(TypeName = "decimal(18,2)")]
         [Display(Name = "Цена (лв.)")]
         public decimal Price { get; set; }
