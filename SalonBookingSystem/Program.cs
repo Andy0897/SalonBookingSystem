@@ -52,7 +52,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    //await DbInitializer.SeedAdminAsync(context);
+    await DbInitializer.SeedAdminAsync(context);
 }
 
 // Configure the HTTP request pipeline.

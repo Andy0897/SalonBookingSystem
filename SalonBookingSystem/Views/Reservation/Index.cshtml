@@ -5,178 +5,315 @@
 }
 
 
-<div class="container mt-4">
+<div class="container py-5">
 
 
-    <div class="card shadow">
+    <div class="mb-4">
 
+        <h2 class="fw-bold">
 
-        <div class="card-header bg-dark text-white">
+            Всички резервации
 
-            <h3>
-                Всички резервации
-            </h3>
+        </h2>
 
-        </div>
 
+        <p class="text-muted">
 
-        <div class="card-body">
+            Управление на всички направени резервации.
 
+        </p>
 
-            <table class="table table-striped">
+    </div>
 
 
-                <thead>
 
-                    <tr>
 
-                        <th>
-                            Клиент
-                        </th>
+    <div class="card border-0 shadow-sm">
 
-                        <th>
-                            Услуга
-                        </th>
 
-                        <th>
-                            Служител
-                        </th>
+        <div class="card-body p-0">
 
-                        <th>
-                            Дата
-                        </th>
 
-                        <th>
-                            Час
-                        </th>
+            @if (!Model.Any())
+            {
 
-                        <th>
-                            Статус
-                        </th>
+                <div class="text-center p-5">
 
-                        <th>
-                            Действия
-                        </th>
 
+                    <h5 class="fw-bold">
 
-                    </tr>
+                        Няма резервации
 
-                </thead>
+                    </h5>
 
 
-                <tbody>
+                    <p class="text-muted">
 
+                        Все още няма създадени резервации.
 
-                    @foreach (var reservation in Model)
-                    {
+                    </p>
 
-                        <tr>
 
+                </div>
 
-                            <td>
+            }
+            else
+            {
 
-                                @reservation.Client.FirstName
-                                @reservation.Client.LastName
 
-                            </td>
+                <div class="table-responsive">
 
 
-                            <td>
+                    <table class="table table-hover align-middle mb-0">
 
-                                @reservation.BeautyService.Name
 
-                            </td>
+                        <thead class="table-light">
 
 
-                            <td>
+                            <tr>
 
-                                @reservation.Employee.User.FirstName
-                                @reservation.Employee.User.LastName
 
-                            </td>
+                                <th class="ps-4">
+                                    Клиент
+                                </th>
 
 
-                            <td>
+                                <th>
+                                    Услуга
+                                </th>
 
-                                @reservation.ReservationDate
 
-                            </td>
+                                <th>
+                                    Служител
+                                </th>
 
 
-                            <td>
+                                <th>
+                                    Дата
+                                </th>
 
-                                @reservation.StartTime -
-                                @reservation.EndTime
 
-                            </td>
+                                <th>
+                                    Час
+                                </th>
 
 
-                            <td>
+                                <th>
+                                    Статус
+                                </th>
 
-                                @reservation.Status.
 
-                            </td>
+                                <th class="pe-4">
+                                    Действия
+                                </th>
 
 
-                            <td>
+                            </tr>
 
 
-                                <form asp-action="ChangeStatus"
-                                      method="post">
+                        </thead>
 
 
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@reservation.Id" />
 
+                        <tbody>
 
-                                    <select name="status"
-                                            class="form-select">
 
 
-                                        <option value="0">
-                                            Резервирана
-                                        </option>
+                            @foreach (var reservation in Model)
+                            {
 
 
-                                        <option value="1">
-                                            Завършена
-                                        </option>
+                                <tr>
 
 
-                                        <option value="2">
-                                            Отказана
-                                        </option>
+                                    <td class="ps-4 fw-semibold">
 
 
-                                    </select>
+                                        @reservation.Client.FirstName
+                                        @reservation.Client.LastName
 
 
-                                    <br />
+                                    </td>
 
 
-                                    <button class="btn btn-primary btn-sm">
 
-                                        Запази
 
-                                    </button>
+                                    <td>
 
 
-                                </form>
+                                        @reservation.BeautyService.Name
 
 
-                            </td>
+                                    </td>
 
 
-                        </tr>
 
-                    }
 
+                                    <td>
 
-                </tbody>
 
+                                        @reservation.Employee.User.FirstName
+                                        @reservation.Employee.User.LastName
 
-            </table>
+
+                                    </td>
+
+
+
+
+                                    <td>
+
+
+                                        @reservation.ReservationDate
+
+
+                                    </td>
+
+
+
+
+                                    <td>
+
+
+                                        @reservation.StartTime -
+                                        @reservation.EndTime
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+
+                                        @switch (reservation.Status)
+                                        {
+
+                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Reserved:
+
+                                                <span class="badge rounded-pill bg-warning text-dark">
+
+                                                    Резервирана
+
+                                                </span>
+
+                                                break;
+
+
+
+                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Completed:
+
+                                                <span class="badge rounded-pill bg-success">
+
+                                                    Завършена
+
+                                                </span>
+
+                                                break;
+
+
+
+                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled:
+
+                                                <span class="badge rounded-pill bg-danger">
+
+                                                    Отказана
+
+                                                </span>
+
+                                                break;
+
+                                        }
+
+
+                                    </td>
+
+
+
+
+
+                                    <td class="pe-4">
+
+
+                                        <form asp-action="ChangeStatus"
+                                              method="post"
+                                              class="d-flex gap-2">
+
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@reservation.Id" />
+
+
+
+                                            <select name="status"
+                                                    class="form-select form-select-sm">
+
+
+                                                <option value="0"
+                                                        selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Reserved)">
+
+                                                    Резервирана
+
+                                                </option>
+
+
+
+                                                <option value="1"
+                                                        selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Completed)">
+
+                                                    Завършена
+
+                                                </option>
+
+
+
+                                                <option value="2"
+                                                        selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled)">
+
+                                                    Отказана
+
+                                                </option>
+
+
+                                            </select>
+
+
+
+
+                                            <button class="btn btn-dark btn-sm">
+
+                                                Запази
+
+                                            </button>
+
+
+                                        </form>
+
+
+                                    </td>
+
+
+
+                                </tr>
+
+
+                            }
+
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+            }
 
 
         </div>
