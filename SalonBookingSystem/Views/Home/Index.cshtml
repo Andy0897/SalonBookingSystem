@@ -1,8 +1,260 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model SalonBookingSystem.ViewModels.Home.HomeViewModel
+
+@{
+    ViewData["Title"] = "Beauty Salon";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+
+<div class="container py-5">
+
+
+
+    <section class="text-center py-5 mb-5 bg-light rounded-4 shadow-sm">
+
+
+        <h1 class="display-3 fw-bold">
+
+            Beauty Salon
+
+        </h1>
+
+
+        <p class="lead text-muted">
+
+            Професионални козметични услуги и лесни онлайн резервации.
+
+        </p>
+
+
+
+        @if (User.Identity!.IsAuthenticated)
+        {
+
+            <a asp-controller="Reservation"
+               asp-action="Create"
+               class="btn btn-dark btn-lg px-5">
+
+                Запази час
+
+            </a>
+
+        }
+        else
+        {
+
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="btn btn-dark btn-lg px-5">
+
+                Влез и запази час
+
+            </a>
+
+        }
+
+
+    </section>
+
+
+
+
+
+    <h2 class="fw-bold mb-4">
+
+        Нашите услуги
+
+    </h2>
+
+
+
+    <div class="row">
+
+
+        @foreach (var service in Model.Services)
+        {
+
+            <div class="col-md-4 mb-4">
+
+
+                <div class="card border-0 shadow-sm h-100">
+
+
+                    <div class="card-body p-4">
+
+
+                        <h4 class="fw-bold">
+
+                            @service.Name
+
+                        </h4>
+
+
+                        <p class="text-muted">
+
+                            Професионална услуга от нашия екип.
+
+                        </p>
+
+
+                    </div>
+
+
+                    <div class="card-footer bg-white border-0 p-4">
+
+
+                        <strong>
+
+                            @service.Price лв.
+
+                        </strong>
+
+                        <br />
+
+                        <span class="text-muted">
+
+                            @service.DurationMinutes минути
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        }
+
+
+    </div>
+
+
+
+
+
+    <h2 class="fw-bold mt-5 mb-4">
+
+        Нашите специалисти
+
+    </h2>
+
+
+
+    <div class="row">
+
+
+        @foreach (var employee in Model.Employees)
+        {
+
+
+            <div class="col-md-3 mb-4">
+
+
+                <div class="card border-0 shadow-sm text-center h-100">
+
+
+                    <div class="card-body">
+
+
+                        <h5 class="fw-bold">
+
+                            @employee.User.FirstName
+                            @employee.User.LastName
+
+                        </h5>
+
+
+                        <p class="text-muted">
+
+                            @employee.Specialty
+
+                        </p>
+
+
+                        <small>
+
+                            @employee.WorkStart -
+                            @employee.WorkEnd
+
+                        </small>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        }
+
+
+    </div>
+
+
+
+
+
+
+    <div class="row mt-5">
+
+
+        @foreach (var item in new[]
+        {
+("Професионален екип",
+"Нашите специалисти имат богат опит."),
+
+("Онлайн резервации",
+"Запазете час бързо и удобно."),
+
+("Качествени услуги",
+"Работим с професионални продукти.")
+})
+        {
+
+
+            <div class="col-md-4 mb-4">
+
+
+                <div class="card border-0 shadow-sm text-center h-100">
+
+
+                    <div class="card-body p-4">
+
+
+                        <h5 class="fw-bold">
+
+                            @item.Item1
+
+                        </h5>
+
+
+                        <p class="text-muted">
+
+                            @item.Item2
+
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        }
+
+
+    </div>
+
+
+
 </div>

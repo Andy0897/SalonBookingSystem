@@ -52,5 +52,10 @@ namespace SalonBookingSystem.Repositories
             _context.ApplicationUsers.Update(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await _context.ApplicationUsers.CountAsync();
+        }
     }
 }

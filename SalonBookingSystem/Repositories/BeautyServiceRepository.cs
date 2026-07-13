@@ -41,5 +41,10 @@ namespace SalonBookingSystem.Repositories
             _context.BeautyServices.Remove(beautyService);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await _context.BeautyServices.CountAsync();
+        }
     }
 }

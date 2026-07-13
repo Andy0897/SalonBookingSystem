@@ -1,76 +1,267 @@
 ﻿@model IEnumerable<SalonBookingSystem.Models.ApplicationUser>
 
 @{
-    ViewData["Title"] = "Потребители";
+	ViewData["Title"] = "Потребители";
 }
 
-<div class="container mt-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Потребители</h2>
-    </div>
+<div class="container py-5">
 
 
-    <table class="table table-bordered table-hover shadow">
 
-        <thead class="table-dark">
-            <tr>
-                <th>Име</th>
-                <th>Email</th>
-                <th>Телефон</th>
-                <th width="120">Действия</th>
-            </tr>
-        </thead>
+	<div class="mb-4">
 
 
-        <tbody>
+		<h2 class="fw-bold">
 
-            @foreach (var user in Model)
-            {
-                <tr>
+			Потребители
 
-                    <td>
-                        @user.FirstName @user.LastName
-                    </td>
+		</h2>
 
 
-                    <td>
-                        @user.Email
-                    </td>
+		<p class="text-muted">
+
+			Управление на регистрираните потребители.
+
+		</p>
 
 
-                    <td>
-                        @user.PhoneNumber
-                    </td>
+	</div>
 
 
-                    <td>
 
-                        @if (user.Role == SalonBookingSystem.Models.Enums.UserRole.Employee)
-                        {
-                            <span class="badge bg-success">
-                                Служител
-                            </span>
-                        }
-                        else
-                        {
-                            <a asp-controller="Employee"
-                               asp-action="Create"
-                               asp-route-userId="@user.Id"
-                               class="btn btn-primary">
 
-                                Добави като служител
 
-                            </a>
-                        }
+	<div class="card border-0 shadow-sm">
 
-                    </td>
 
-                </tr>
-            }
+		<div class="card-body p-0">
 
-        </tbody>
 
-    </table>
+			@if (!Model.Any())
+			{
+
+				<div class="text-center p-5">
+
+
+					<h5 class="fw-bold">
+
+						Няма налични потребители
+
+					</h5>
+
+
+					<p class="text-muted">
+
+						Все още няма регистрирани акаунти.
+
+					</p>
+
+
+				</div>
+
+			}
+			else
+			{
+
+
+				<div class="table-responsive">
+
+
+					<table class="table table-hover align-middle mb-0">
+
+
+						<thead class="table-light">
+
+
+							<tr>
+
+
+								<th class="ps-4">
+
+									Име
+
+								</th>
+
+
+								<th>
+
+									Имейл
+
+								</th>
+
+
+								<th>
+
+									Телефон
+
+								</th>
+
+
+								<th>
+
+									Роля
+
+								</th>
+
+
+								<th class="text-end pe-4">
+
+									Действия
+
+								</th>
+
+
+							</tr>
+
+
+						</thead>
+
+
+
+						<tbody>
+
+
+
+							@foreach (var user in Model)
+							{
+
+								<tr>
+
+
+
+									<td class="ps-4 fw-semibold">
+
+
+										@user.FirstName
+										@user.LastName
+
+
+									</td>
+
+
+
+
+									<td>
+
+
+										@user.Email
+
+
+									</td>
+
+
+
+
+									<td>
+
+
+										@(user.PhoneNumber ?? "-")
+
+                                    
+									</td>
+
+
+
+
+									<td>
+
+
+										@if (user.Role ==
+										SalonBookingSystem.Models.Enums.UserRole.Employee)
+										{
+
+
+											<span class="badge rounded-pill bg-success">
+
+												Служител
+
+											</span>
+
+
+										}
+										else
+										{
+
+
+											<span class="badge rounded-pill bg-light text-dark border">
+
+												Клиент
+
+											</span>
+
+
+										}
+
+
+									</td>
+
+
+
+
+
+									<td class="text-end pe-4">
+
+
+										@if (user.Role !=
+										SalonBookingSystem.Models.Enums.UserRole.Employee)
+										{
+
+
+											<a asp-controller="Employee"
+											   asp-action="Create"
+											   asp-route-userId="@user.Id"
+											   class="btn btn-dark btn-sm">
+
+
+												Добави като служител
+
+
+											</a>
+
+
+										}
+										else
+										{
+
+											<span class="text-muted">
+
+												Активен служител
+
+											</span>
+
+										}
+
+
+									</td>
+
+
+
+
+								</tr>
+
+
+							}
+
+
+
+						</tbody>
+
+
+					</table>
+
+
+				</div>
+
+
+			}
+
+
+		</div>
+
+
+	</div>
+
+
 
 </div>

@@ -95,6 +95,9 @@ namespace SalonBookingSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Specialty")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

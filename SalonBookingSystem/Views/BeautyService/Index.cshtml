@@ -4,68 +4,200 @@
     ViewData["Title"] = "Услуги";
 }
 
-<div class="container mt-4">
+<div class="container py-5">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Услуги</h2>
 
-        <a asp-action="Create" class="btn btn-success">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                Услуги
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Управление на предлаганите услуги в салона.
+
+            </p>
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="btn btn-dark">
+
             + Добави услуга
+
         </a>
+
+
     </div>
 
-    <table class="table table-bordered table-hover shadow">
 
-        <thead class="table-dark">
 
-            <tr>
-                <th>Име</th>
-                <th>Продължителност</th>
-                <th>Цена</th>
-                <th width="220">Действия</th>
-            </tr>
+    <div class="card border-0 shadow-sm">
 
-        </thead>
 
-        <tbody>
+        <div class="card-body p-0">
 
-            @foreach (var item in Model)
+
+            @if (!Model.Any())
             {
-                <tr>
 
-                    <td>@item.Name</td>
+                <div class="p-5 text-center">
 
-                    <td>@item.DurationMinutes мин.</td>
 
-                    <td>@item.Price лв.</td>
+                    <h5 class="fw-bold">
 
-                    <td>
+                        Няма добавени услуги
 
-                        <a asp-action="Details"
-                           asp-route-id="@item.Id"
-                           class="btn btn-info btn-sm">
-                            Детайли
-                        </a>
+                    </h5>
 
-                        <a asp-action="Edit"
-                           asp-route-id="@item.Id"
-                           class="btn btn-warning btn-sm">
-                            Редакция
-                        </a>
 
-                        <a asp-action="Delete"
-                           asp-route-id="@item.Id"
-                           class="btn btn-danger btn-sm">
-                            Изтрий
-                        </a>
+                    <p class="text-muted">
 
-                    </td>
+                        Все още няма създадени услуги в системата.
 
-                </tr>
+                    </p>
+
+
+                    <a asp-action="Create"
+                       class="btn btn-dark">
+
+                        Добави първата услуга
+
+                    </a>
+
+
+                </div>
+
+            }
+            else
+            {
+
+
+                <div class="table-responsive">
+
+
+                    <table class="table table-hover align-middle mb-0">
+
+
+                        <thead class="table-light">
+
+
+                            <tr>
+
+                                <th class="ps-4">
+                                    Име
+                                </th>
+
+                                <th>
+                                    Продължителност
+                                </th>
+
+                                <th>
+                                    Цена
+                                </th>
+
+                                <th class="text-end pe-4">
+                                    Действия
+                                </th>
+
+                            </tr>
+
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+
+
+                                    <td class="ps-4 fw-semibold">
+
+                                        @item.Name
+
+                                    </td>
+
+
+                                    <td>
+
+                                        @item.DurationMinutes мин.
+
+                                    </td>
+
+
+                                    <td>
+
+                                        @item.Price лв.
+
+                                    </td>
+
+
+                                    <td class="text-end pe-4">
+
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-outline-secondary btn-sm">
+
+                                            Детайли
+
+                                        </a>
+
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-outline-dark btn-sm">
+
+                                            Редакция
+
+                                        </a>
+
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-outline-danger btn-sm">
+
+                                            Изтрий
+
+                                        </a>
+
+
+                                    </td>
+
+
+                                </tr>
+
+                            }
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
             }
 
-        </tbody>
 
-    </table>
+        </div>
+
+
+    </div>
+
 
 </div>

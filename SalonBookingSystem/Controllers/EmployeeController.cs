@@ -1,98 +1,195 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SalonBookingSystem.Models;
+using SalonBookingSystem.Models.Enums;
+using SalonBookingSystem.Models.ViewModels;
+using SalonBookingSystem.Services;
 using SalonBookingSystem.Services.Interfaces;
 
 namespace SalonBookingSystem.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IUserService _userService;
+        private readonly IReservationService _reservationService;
 
-        public EmployeeController(
-            IEmployeeService employeeService,
-            IUserService userService)
+        public EmployeeController(IEmployeeService employeeService, IReservationService reservationService)
         {
             _employeeService = employeeService;
-            _userService = userService;
+            _reservationService = reservationService;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var employees = await _employeeService.GetAllAsync();
             return View(employees);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(int userId)
         {
-            var user = await _userService.GetByIdAsync(userId);
+            var model = await _employeeService.GetCreateModelAsync(userId);
 
-            if (user == null)
+            if (model == null)
                 return NotFound();
 
-            var employee = new Employee
-            {
-                UserId = user.Id,
-                User = user,
-                WorkStart = new TimeOnly(9, 0),
-                WorkEnd = new TimeOnly(17, 0)
-            };
-
-            return View(employee);
+            return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Employee employee)
+        public async Task<IActionResult> Create(EmployeeFormViewModel model)
         {
-            ModelState.Remove(nameof(Employee.User));
+            ModelState.Remove(nameof(model.User));
 
             if (!ModelState.IsValid)
             {
-                employee.User = await _userService.GetByIdAsync(employee.UserId);
-                return View(employee);
+                var reload = await _employeeService.GetCreateModelAsync(model.UserId);
+
+                if (reload == null)
+                    return NotFound();
+
+                reload.Specialty = model.Specialty;
+                reload.Description = model.Description;
+                reload.WorkStart = model.WorkStart;
+                reload.WorkEnd = model.WorkEnd;
+
+                foreach (var service in reload.Services)
+                {
+                    service.Selected = model.Services
+                        .Any(x => x.BeautyServiceId == service.BeautyServiceId && x.Selected);
+                }
+
+                return View(reload);
             }
 
-            await _employeeService.CreateAsync(employee);
+            await _employeeService.CreateAsync(model);
 
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
-            var employee = await _employeeService.GetByIdAsync(id);
+            var model = await _employeeService.GetEditModelAsync(id);
 
-            if (employee == null)
+            if (model == null)
                 return NotFound();
 
-            return View(employee);
+            return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Employee employee)
+        public async Task<IActionResult> Edit(EmployeeFormViewModel model)
         {
-            ModelState.Remove(nameof(Employee.User));
+            ModelState.Remove(nameof(model.User));
 
             if (!ModelState.IsValid)
             {
-                employee.User = await _userService.GetByIdAsync(employee.UserId);
+                var reload = await _employeeService.GetEditModelAsync(model.Id);
 
-                return View(employee);
+                if (reload == null)
+                    return NotFound();
+
+                reload.Specialty = model.Specialty;
+                reload.Description = model.Description;
+                reload.WorkStart = model.WorkStart;
+                reload.WorkEnd = model.WorkEnd;
+
+                foreach (var service in reload.Services)
+                {
+                    service.Selected = model.Services
+                        .Any(x => x.BeautyServiceId == service.BeautyServiceId && x.Selected);
+                }
+
+                return View(reload);
             }
 
-            await _employeeService.UpdateAsync(employee);
+            await _employeeService.UpdateAsync(model);
 
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             await _employeeService.DeleteAsync(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> MyReservations()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var employee = await _employeeService.GetByUserIdAsync(userId);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            var reservations =
+                await _reservationService.GetEmployeeReservationsAsync(employee.Id);
+
+            return View(reservations);
+        }
+
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> ReservationDetails(int id)
+        {
+            var reservation = await _reservationService.GetByIdAsync(id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var employee = await _employeeService.GetByUserIdAsync(userId);
+
+            if (employee == null || reservation.EmployeeId != employee.Id)
+            {
+                return Forbid();
+            }
+
+            return View(reservation);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
+        public async Task<IActionResult> CompleteReservation(int id)
+        {
+            var reservation = await _reservationService.GetByIdAsync(id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var employee = await _employeeService.GetByUserIdAsync(userId);
+
+            if (employee == null || reservation.EmployeeId != employee.Id)
+            {
+                return Forbid();
+            }
+
+            await _reservationService.ChangeStatusAsync(
+                id,
+                ReservationStatus.Completed);
+
+            return RedirectToAction(nameof(MyReservations));
         }
     }
 }

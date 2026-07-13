@@ -1,0 +1,144 @@
+﻿@model List<SalonBookingSystem.Models.Employee>
+
+@{
+    ViewData["Title"] = "Нашият екип";
+}
+
+<div class="container py-5">
+
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            Нашите специалисти
+        </h1>
+
+        <p class="text-muted">
+            Запознайте се с нашия професионален екип.
+        </p>
+
+    </div>
+
+
+
+    <div class="row">
+
+
+        @foreach (var employee in Model)
+        {
+
+            <div class="col-lg-4 col-md-6 mb-4">
+
+
+                <div class="card border-0 shadow-sm h-100">
+
+
+                    <div class="card-body p-4 text-center">
+
+
+                        <div class="mb-3">
+
+                            <div class="rounded-circle bg-light mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:80px;height:80px;">
+
+                                <span class="fs-2 fw-bold text-secondary">
+
+                                    @employee.User.FirstName.Substring(0, 1)
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <h4 class="fw-bold">
+
+                            @employee.User.FirstName
+                            @employee.User.LastName
+
+                        </h4>
+
+
+
+                        <p class="text-muted">
+
+                            @employee.Specialty
+
+                        </p>
+
+
+
+                        <p>
+
+                            @employee.Description
+
+                        </p>
+
+
+
+                        <hr />
+
+
+
+                        <div class="text-start">
+
+
+                            <strong>
+                                Работно време
+                            </strong>
+
+
+                            <p class="text-muted">
+
+                                @employee.WorkStart -
+                                @employee.WorkEnd
+
+                            </p>
+
+
+
+                            <strong>
+                                Услуги
+                            </strong>
+
+
+
+                            <div class="mt-2">
+
+
+                                @foreach (var service in employee.EmployeeServices)
+                                {
+
+                                    <span class="badge bg-light text-dark border me-1 mb-1">
+
+                                        @service.BeautyService.Name
+
+                                    </span>
+
+                                }
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        }
+
+
+    </div>
+
+
+</div>

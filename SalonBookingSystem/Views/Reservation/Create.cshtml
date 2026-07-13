@@ -1,0 +1,403 @@
+﻿@model SalonBookingSystem.Models.ViewModels.ReservationFormViewModel
+
+@{
+    ViewData["Title"] = "Нова резервация";
+}
+
+
+<div class="container py-5">
+
+
+    <div class="row justify-content-center">
+
+
+        <div class="col-lg-7">
+
+
+            <div class="card border-0 shadow-sm">
+
+
+                <div class="card-body p-5">
+
+
+                    <div class="text-center mb-5">
+
+
+                        <h2 class="fw-bold">
+
+                            Запази своя час
+
+                        </h2>
+
+
+                        <p class="text-muted">
+
+                            Избери услуга, специалист, дата и удобен час.
+
+                        </p>
+
+
+                    </div>
+
+
+
+                    <form asp-action="Create" method="post">
+
+
+                        @Html.AntiForgeryToken()
+
+
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+
+
+
+                        <div class="mb-4">
+
+
+                            <label asp-for="BeautyServiceId"
+                                   class="form-label fw-semibold">
+
+                                Услуга
+
+                            </label>
+
+
+
+                            <select asp-for="BeautyServiceId"
+                                    asp-items="Model.Services"
+                                    class="form-select form-select-lg"
+                                    id="serviceSelect">
+
+
+                                <option value="">
+
+                                    Изберете услуга
+
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+
+
+                        <div class="mb-4">
+
+
+                            <label asp-for="EmployeeId"
+                                   class="form-label fw-semibold">
+
+                                Специалист
+
+                            </label>
+
+
+
+                            <select asp-for="EmployeeId"
+                                    class="form-select form-select-lg"
+                                    id="employeeSelect">
+
+
+                                <option value="">
+
+                                    Първо изберете услуга
+
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+
+
+                        <div class="mb-4">
+
+
+                            <label asp-for="ReservationDate"
+                                   class="form-label fw-semibold">
+
+                                Дата
+
+                            </label>
+
+
+
+                            <input asp-for="ReservationDate"
+                                   type="date"
+                                   class="form-control form-control-lg"
+                                   id="dateSelect" />
+
+
+                        </div>
+
+
+
+
+
+                        <div class="mb-5">
+
+
+                            <label asp-for="StartTime"
+                                   class="form-label fw-semibold">
+
+                                Свободен час
+
+                            </label>
+
+
+
+                            <select asp-for="StartTime"
+                                    asp-items="Model.AvailableTimes"
+                                    class="form-select form-select-lg"
+                                    id="timeSelect">
+
+
+                                <option value="">
+
+                                    Изберете час
+
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+
+                        <button type="submit"
+                                class="btn btn-dark btn-lg w-100">
+
+
+                            Потвърди резервация
+
+
+                        </button>
+
+
+
+                    </form>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+
+    <script>
+
+
+        document
+        .getElementById("serviceSelect")
+        .addEventListener("change", function () {
+
+
+            let serviceId = this.value;
+
+
+            let employeeSelect =
+                document.getElementById("employeeSelect");
+
+
+
+            employeeSelect.innerHTML = "";
+
+
+
+            if(serviceId === "")
+            {
+
+                employeeSelect.innerHTML =
+                "<option>Първо изберете услуга</option>";
+
+                return;
+
+            }
+
+
+
+
+            fetch('/Reservation/GetEmployees?serviceId=' + serviceId)
+
+
+            .then(response => response.json())
+
+
+            .then(data => {
+
+
+                employeeSelect.innerHTML =
+                "<option value=''>Изберете специалист</option>";
+
+
+
+                data.forEach(employee => {
+
+
+
+                    let option =
+                    document.createElement("option");
+
+
+
+                    option.value =
+                    employee.value;
+
+
+
+                    option.text =
+                    employee.text;
+
+
+
+                    employeeSelect.appendChild(option);
+
+
+
+                });
+
+
+
+            });
+
+
+
+        });
+
+
+
+
+
+        function loadTimes()
+        {
+
+
+            let employeeId =
+            document.getElementById("employeeSelect").value;
+
+
+
+            let serviceId =
+            document.getElementById("serviceSelect").value;
+
+
+
+            let date =
+            document.getElementById("dateSelect").value;
+
+
+
+            if(employeeId &&
+               serviceId &&
+               date)
+            {
+
+
+                fetch(`/Reservation/GetAvailableTimes?employeeId=${employeeId}&beautyServiceId=${serviceId}&date=${date}`)
+
+
+                .then(response => response.json())
+
+
+                .then(data => {
+
+
+
+                    let select =
+                    document.getElementById("timeSelect");
+
+
+
+                    select.innerHTML =
+                    "<option>Изберете час</option>";
+
+
+
+                    data.forEach(x => {
+
+
+
+                        let option =
+                        document.createElement("option");
+
+
+
+                        option.value =
+                        x.value;
+
+
+
+                        option.text =
+                        x.text;
+
+
+
+                        select.appendChild(option);
+
+
+
+                    });
+
+
+
+                });
+
+
+            }
+
+
+        }
+
+
+
+
+
+        document
+        .getElementById("employeeSelect")
+        .addEventListener("change", loadTimes);
+
+
+
+
+        document
+        .getElementById("dateSelect")
+        .addEventListener("change", loadTimes);
+
+
+
+    </script>
+
+
+}

@@ -13,5 +13,7 @@ namespace SalonBookingSystem.Repositories.Interfaces
         Task UpdateAsync(BeautyService beautyService);
 
         Task DeleteAsync(BeautyService beautyService);
+
+        Task<int> CountAsync();
     }
 }

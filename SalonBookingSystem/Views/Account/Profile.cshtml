@@ -1,0 +1,151 @@
+﻿@model SalonBookingSystem.Models.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Моят профил";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+
+                        <h2 class="fw-bold mb-2">
+
+                            Моят профил
+
+                        </h2>
+
+                        <p class="text-muted mb-0">
+
+                            Преглед и редакция на личните Ви данни.
+
+                        </p>
+
+                    </div>
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+
+                            @TempData["Success"]
+
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert">
+                            </button>
+
+                        </div>
+                    }
+
+                    <form asp-action="Profile" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input asp-for="Id" type="hidden" />
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="FirstName"
+                                       class="form-label fw-semibold"></label>
+
+                                <input asp-for="FirstName"
+                                       class="form-control form-control-lg" />
+
+                                <span asp-validation-for="FirstName"
+                                      class="text-danger"></span>
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="LastName"
+                                       class="form-label fw-semibold"></label>
+
+                                <input asp-for="LastName"
+                                       class="form-control form-control-lg" />
+
+                                <span asp-validation-for="LastName"
+                                      class="text-danger"></span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="PhoneNumber"
+                                   class="form-label fw-semibold"></label>
+
+                            <input asp-for="PhoneNumber"
+                                   class="form-control form-control-lg" />
+
+                            <span asp-validation-for="PhoneNumber"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label asp-for="Email"
+                                   class="form-label fw-semibold"></label>
+
+                            <input asp-for="Email"
+                                   class="form-control form-control-lg bg-light"
+                                   readonly />
+
+                            <div class="form-text">
+
+                                Имейл адресът не може да бъде променян.
+
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <a asp-controller="Home"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary px-4">
+
+                                Назад
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-dark px-4">
+
+                                Запази промените
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SalonBookingSystem.Filters;
+using SalonBookingSystem.Models.Enums;
 using SalonBookingSystem.Models.ViewModels;
 using SalonBookingSystem.Services.Interfaces;
-using System.Security.Claims;
 
 namespace SalonBookingSystem.Controllers
 {
@@ -89,6 +90,16 @@ namespace SalonBookingSystem.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal);
 
+            if (user.Role == UserRole.Admin)
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+
+            if (user.Role == UserRole.Employee)
+            {
+                return RedirectToAction("MyReservations", "Employee");
+            }
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -100,6 +111,38 @@ namespace SalonBookingSystem.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction(nameof(Login));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var model = await _userService.GetProfileAsync(userId);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(ProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _userService.UpdateProfileAsync(model);
+
+            TempData["Success"] = "Профилът беше обновен успешно.";
+
+            return RedirectToAction(nameof(Profile));
         }
     }
 }

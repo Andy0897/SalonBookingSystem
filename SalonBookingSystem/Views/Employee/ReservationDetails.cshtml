@@ -1,0 +1,224 @@
+﻿@model SalonBookingSystem.Models.Reservation
+
+@{
+    ViewData["Title"] = "Детайли за резервация";
+}
+
+<div class="container py-5">
+
+
+    <div class="row justify-content-center">
+
+
+        <div class="col-lg-7">
+
+
+            <div class="card border-0 shadow-sm">
+
+
+                <div class="card-body p-5">
+
+
+                    <div class="text-center mb-4">
+
+
+                        <h2 class="fw-bold">
+
+                            Детайли за резервацията
+
+                        </h2>
+
+
+                        <p class="text-muted">
+
+                            Информация за клиентското посещение.
+
+                        </p>
+
+
+                    </div>
+
+
+
+
+                    <div class="list-group list-group-flush">
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span class="fw-semibold">
+                                Клиент
+                            </span>
+
+                            <span>
+                                @Model.Client.FirstName
+                                @Model.Client.LastName
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span class="fw-semibold">
+                                Телефон
+                            </span>
+
+                            <span>
+                                @Model.Client.PhoneNumber
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span class="fw-semibold">
+                                Услуга
+                            </span>
+
+                            <span>
+                                @Model.BeautyService.Name
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span class="fw-semibold">
+                                Цена
+                            </span>
+
+                            <span>
+                                @Model.BeautyService.Price лв.
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span class="fw-semibold">
+                                Продължителност
+                            </span>
+
+                            <span>
+                                @Model.BeautyService.DurationMinutes минути
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span class="fw-semibold">
+                                Дата
+                            </span>
+
+                            <span>
+                                @Model.ReservationDate.ToString("dd.MM.yyyy")
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span class="fw-semibold">
+                                Час
+                            </span>
+
+                            <span>
+                                @Model.StartTime -
+                                @Model.EndTime
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span class="fw-semibold">
+                                Статус
+                            </span>
+
+                            <span>
+
+                                @switch (Model.Status)
+                                {
+
+                                    case SalonBookingSystem.Models.Enums.ReservationStatus.Reserved:
+
+                                        <span class="badge rounded-pill bg-warning text-dark">
+                                            Резервирана
+                                        </span>
+
+                                        break;
+
+
+                                    case SalonBookingSystem.Models.Enums.ReservationStatus.Completed:
+
+                                        <span class="badge rounded-pill bg-success">
+                                            Завършена
+                                        </span>
+
+                                        break;
+
+
+                                    case SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled:
+
+                                        <span class="badge rounded-pill bg-danger">
+                                            Отказана
+                                        </span>
+
+                                        break;
+
+                                }
+
+                            </span>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+                    <div class="mt-4">
+
+
+                        <a asp-action="MyReservations"
+                           class="btn btn-outline-secondary">
+
+                            Назад
+
+                        </a>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

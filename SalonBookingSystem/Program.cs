@@ -27,6 +27,14 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
+builder.Services.AddScoped<IReservationService, ReservationService>();
+
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+
+builder.Services.AddScoped<IHomeService, HomeService>();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options =>
 {
@@ -44,7 +52,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    await DbInitializer.SeedAdminAsync(context);
+    //await DbInitializer.SeedAdminAsync(context);
 }
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,188 @@
+﻿@model List<SalonBookingSystem.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Всички резервации";
+}
+
+
+<div class="container mt-4">
+
+
+    <div class="card shadow">
+
+
+        <div class="card-header bg-dark text-white">
+
+            <h3>
+                Всички резервации
+            </h3>
+
+        </div>
+
+
+        <div class="card-body">
+
+
+            <table class="table table-striped">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Клиент
+                        </th>
+
+                        <th>
+                            Услуга
+                        </th>
+
+                        <th>
+                            Служител
+                        </th>
+
+                        <th>
+                            Дата
+                        </th>
+
+                        <th>
+                            Час
+                        </th>
+
+                        <th>
+                            Статус
+                        </th>
+
+                        <th>
+                            Действия
+                        </th>
+
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    @foreach (var reservation in Model)
+                    {
+
+                        <tr>
+
+
+                            <td>
+
+                                @reservation.Client.FirstName
+                                @reservation.Client.LastName
+
+                            </td>
+
+
+                            <td>
+
+                                @reservation.BeautyService.Name
+
+                            </td>
+
+
+                            <td>
+
+                                @reservation.Employee.User.FirstName
+                                @reservation.Employee.User.LastName
+
+                            </td>
+
+
+                            <td>
+
+                                @reservation.ReservationDate
+
+                            </td>
+
+
+                            <td>
+
+                                @reservation.StartTime -
+                                @reservation.EndTime
+
+                            </td>
+
+
+                            <td>
+
+                                @reservation.Status.
+
+                            </td>
+
+
+                            <td>
+
+
+                                <form asp-action="ChangeStatus"
+                                      method="post">
+
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@reservation.Id" />
+
+
+                                    <select name="status"
+                                            class="form-select">
+
+
+                                        <option value="0">
+                                            Резервирана
+                                        </option>
+
+
+                                        <option value="1">
+                                            Завършена
+                                        </option>
+
+
+                                        <option value="2">
+                                            Отказана
+                                        </option>
+
+
+                                    </select>
+
+
+                                    <br />
+
+
+                                    <button class="btn btn-primary btn-sm">
+
+                                        Запази
+
+                                    </button>
+
+
+                                </form>
+
+
+                            </td>
+
+
+                        </tr>
+
+                    }
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

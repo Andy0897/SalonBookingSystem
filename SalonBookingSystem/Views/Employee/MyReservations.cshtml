@@ -1,0 +1,267 @@
+﻿@model List<SalonBookingSystem.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Моите резервации";
+}
+
+<div class="container py-5">
+
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold mb-1">
+
+            Моите резервации
+
+        </h2>
+
+
+        <p class="text-muted">
+
+            Управление на клиентските посещения.
+
+        </p>
+
+
+    </div>
+
+
+
+    <div class="card border-0 shadow-sm">
+
+
+        <div class="card-body p-0">
+
+
+            @if (!Model.Any())
+            {
+
+                <div class="text-center p-5">
+
+
+                    <h5 class="fw-bold">
+
+                        Няма предстоящи резервации
+
+                    </h5>
+
+
+                    <p class="text-muted mb-0">
+
+                        Все още няма планирани посещения.
+
+                    </p>
+
+
+                </div>
+
+            }
+            else
+            {
+
+
+                <div class="table-responsive">
+
+
+                    <table class="table table-hover align-middle mb-0">
+
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th class="ps-4">
+                                    Клиент
+                                </th>
+
+                                <th>
+                                    Телефон
+                                </th>
+
+                                <th>
+                                    Услуга
+                                </th>
+
+                                <th>
+                                    Дата
+                                </th>
+
+                                <th>
+                                    Час
+                                </th>
+
+                                <th>
+                                    Статус
+                                </th>
+
+                                <th class="text-end pe-4">
+                                    Действия
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            @foreach (var reservation in Model)
+                            {
+
+                                <tr>
+
+
+                                    <td class="ps-4 fw-semibold">
+
+                                        @reservation.Client.FirstName
+                                        @reservation.Client.LastName
+
+                                    </td>
+
+
+
+                                    <td>
+
+                                        @reservation.Client.PhoneNumber
+
+                                    </td>
+
+
+
+                                    <td>
+
+                                        @reservation.BeautyService.Name
+
+                                    </td>
+
+
+
+                                    <td>
+
+                                        @reservation.ReservationDate.ToString("dd.MM.yyyy")
+
+                                    </td>
+
+
+
+                                    <td>
+
+                                        @reservation.StartTime -
+                                        @reservation.EndTime
+
+                                    </td>
+
+
+
+                                    <td>
+
+
+                                        @switch (reservation.Status)
+                                        {
+
+                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Reserved:
+
+                                                <span class="badge rounded-pill bg-warning text-dark">
+
+                                                    Резервирана
+
+                                                </span>
+
+                                                break;
+
+
+                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Completed:
+
+                                                <span class="badge rounded-pill bg-success">
+
+                                                    Завършена
+
+                                                </span>
+
+                                                break;
+
+
+                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled:
+
+                                                <span class="badge rounded-pill bg-danger">
+
+                                                    Отказана
+
+                                                </span>
+
+                                                break;
+
+                                        }
+
+
+                                    </td>
+
+
+
+                                    <td class="text-end pe-4">
+
+
+                                        <a asp-action="ReservationDetails"
+                                           asp-route-id="@reservation.Id"
+                                           class="btn btn-outline-secondary btn-sm">
+
+                                            Детайли
+
+                                        </a>
+
+
+
+                                        @if (reservation.Status ==
+                                        SalonBookingSystem.Models.Enums.ReservationStatus.Reserved)
+                                        {
+
+                                            <form asp-action="CompleteReservation"
+                                                  asp-route-id="@reservation.Id"
+                                                  method="post"
+                                                  class="d-inline">
+
+
+                                                @Html.AntiForgeryToken()
+
+
+                                                <button class="btn btn-dark btn-sm">
+
+                                                    Приключи
+
+                                                </button>
+
+
+                                            </form>
+
+                                        }
+
+
+                                    </td>
+
+
+                                </tr>
+
+                            }
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+            }
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

@@ -15,5 +15,7 @@ namespace SalonBookingSystem.Repositories.Interfaces
         Task<ApplicationUser?> GetByIdAsync(int id);
 
         Task UpdateAsync(ApplicationUser user);
+
+        Task<int> CountAsync();
     }
 }

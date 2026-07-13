@@ -4,79 +4,259 @@
     ViewData["Title"] = "Служители";
 }
 
-<div class="container mt-4">
+<div class="container py-5">
 
-    <h2>Служители</h2>
 
-    <table class="table table-bordered table-hover shadow">
+    <div class="mb-4">
 
-        <thead class="table-dark">
 
-            <tr>
+        <h2 class="fw-bold mb-1">
 
-                <th>Име</th>
+            Служители
 
-                <th>Специалност</th>
+        </h2>
 
-                <th>Работно време</th>
 
-                <th width="180">Действия</th>
+        <p class="text-muted">
 
-            </tr>
+            Управление на служителите и техните услуги.
 
-        </thead>
+        </p>
 
-        <tbody>
 
-            @foreach (var employee in Model)
+    </div>
+
+
+
+
+    <div class="card border-0 shadow-sm">
+
+
+        <div class="card-body p-0">
+
+
+            @if (!Model.Any())
             {
-                <tr>
 
-                    <td>
+                <div class="text-center p-5">
 
-                        @employee.User.FirstName
-                        @employee.User.LastName
 
-                    </td>
+                    <h5 class="fw-bold">
 
-                    <td>
+                        Няма добавени служители
 
-                        @employee.Specialty
+                    </h5>
 
-                    </td>
 
-                    <td>
+                    <p class="text-muted mb-0">
 
-                        @employee.WorkStart -
-                        @employee.WorkEnd
+                        Все още няма създадени служители.
 
-                    </td>
+                    </p>
 
-                    <td>
 
-                        <a asp-action="Edit"
-                           asp-route-id="@employee.Id"
-                           class="btn btn-warning btn-sm">
+                </div>
 
-                            Редакция
+            }
+            else
+            {
 
-                        </a>
 
-                        <a asp-action="Delete"
-                           asp-route-id="@employee.Id"
-                           class="btn btn-danger btn-sm">
+                <div class="table-responsive">
 
-                            Изтрий
 
-                        </a>
+                    <table class="table table-hover align-middle mb-0">
 
-                    </td>
 
-                </tr>
+                        <thead class="table-light">
+
+
+                            <tr>
+
+
+                                <th class="ps-4">
+
+                                    Име
+
+                                </th>
+
+
+                                <th>
+
+                                    Специалност
+
+                                </th>
+
+
+                                <th>
+
+                                    Работно време
+
+                                </th>
+
+
+                                <th>
+
+                                    Услуги
+
+                                </th>
+
+
+                                <th class="text-end pe-4">
+
+                                    Действия
+
+                                </th>
+
+
+                            </tr>
+
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+
+                            @foreach (var employee in Model)
+                            {
+
+                                <tr>
+
+
+
+                                    <td class="ps-4">
+
+
+                                        <div class="fw-semibold">
+
+                                            @employee.User.FirstName
+                                            @employee.User.LastName
+
+                                        </div>
+
+
+                                    </td>
+
+
+
+
+                                    <td>
+
+
+                                        @employee.Specialty
+
+
+                                    </td>
+
+
+
+
+                                    <td>
+
+
+                                        <span class="text-muted">
+
+                                            @employee.WorkStart -
+                                            @employee.WorkEnd
+
+                                        </span>
+
+
+                                    </td>
+
+
+
+
+                                    <td>
+
+
+                                        @foreach (var service in employee.EmployeeServices)
+                                        {
+
+                                            <span class="badge rounded-pill bg-light text-dark border me-1 mb-1">
+
+
+                                                @service.BeautyService.Name
+
+
+                                            </span>
+
+                                        }
+
+
+                                    </td>
+
+
+
+
+                                    <td class="text-end pe-4">
+
+
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@employee.Id"
+                                           class="btn btn-outline-dark btn-sm">
+
+
+                                            Редакция
+
+
+                                        </a>
+
+
+
+
+                                        <form asp-action="Delete"
+                                              asp-route-id="@employee.Id"
+                                              method="post"
+                                              class="d-inline">
+
+
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                    onclick="return confirm('Сигурни ли сте?')">
+
+
+                                                Изтрий
+
+
+                                            </button>
+
+
+                                        </form>
+
+
+
+                                    </td>
+
+
+
+                                </tr>
+
+
+                            }
+
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
             }
 
-        </tbody>
 
-    </table>
+
+        </div>
+
+
+    </div>
+
 
 </div>

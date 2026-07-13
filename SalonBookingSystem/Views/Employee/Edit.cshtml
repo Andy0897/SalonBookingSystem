@@ -1,110 +1,233 @@
-﻿@model SalonBookingSystem.Models.Employee
+﻿@model SalonBookingSystem.Models.ViewModels.EmployeeFormViewModel
 
 @{
     ViewData["Title"] = "Редактиране на служител";
 }
 
-<div class="container mt-4">
+<div class="container py-5">
 
-    <div class="card shadow">
+    <div class="row justify-content-center">
 
-        <div class="card-header bg-primary text-white">
+        <div class="col-lg-8">
 
-            <h3>Редактиране на служител</h3>
 
-        </div>
+            <div class="card border-0 shadow-sm">
 
-        <div class="card-body">
 
-            <form asp-action="Edit">
+                <div class="card-body p-5">
 
-                <input type="hidden" asp-for="Id" />
 
-                <input type="hidden" asp-for="UserId" />
+                    <div class="text-center mb-4">
 
-                <div class="mb-3">
+                        <h2 class="fw-bold">
+                            Редактиране на служител
+                        </h2>
 
-                    <label class="form-label">
-
-                        Потребител
-
-                    </label>
-
-                    <input class="form-control"
-                           value="@Model.User.FirstName @Model.User.LastName"
-                           disabled />
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label asp-for="Specialty"></label>
-
-                    <input asp-for="Specialty"
-                           class="form-control" />
-
-                    <span asp-validation-for="Specialty"
-                          class="text-danger"></span>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label asp-for="Description"></label>
-
-                    <textarea asp-for="Description"
-                              class="form-control">
-</textarea>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-6">
-
-                        <label asp-for="WorkStart"></label>
-
-                        <input asp-for="WorkStart"
-                               type="time"
-                               class="form-control" />
+                        <p class="text-muted">
+                            Актуализирайте информацията и услугите.
+                        </p>
 
                     </div>
 
-                    <div class="col-md-6">
 
-                        <label asp-for="WorkEnd"></label>
 
-                        <input asp-for="WorkEnd"
-                               type="time"
-                               class="form-control" />
+                    <form asp-action="Edit">
 
-                    </div>
+
+                        <input asp-for="Id" type="hidden" />
+
+                        <input asp-for="UserId" type="hidden" />
+
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+
+                                Потребител
+
+                            </label>
+
+
+                            <input class="form-control form-control-lg bg-light"
+                                   value="@Model.User.FirstName @Model.User.LastName"
+                                   disabled />
+
+                        </div>
+
+
+
+                        <div class="mb-3">
+
+                            <label asp-for="Specialty"
+                                   class="form-label fw-semibold">
+                            </label>
+
+
+                            <input asp-for="Specialty"
+                                   class="form-control form-control-lg" />
+
+
+                            <span asp-validation-for="Specialty"
+                                  class="text-danger"></span>
+
+                        </div>
+
+
+
+                        <div class="mb-4">
+
+                            <label asp-for="Description"
+                                   class="form-label fw-semibold">
+                            </label>
+
+
+                            <textarea asp-for="Description"
+                                      class="form-control"
+                                      rows="4">
+                            </textarea>
+
+
+                        </div>
+
+
+
+
+                        <div class="row mb-4">
+
+
+                            <div class="col-md-6">
+
+                                <label asp-for="WorkStart"
+                                       class="form-label fw-semibold">
+                                </label>
+
+
+                                <input asp-for="WorkStart"
+                                       type="time"
+                                       class="form-control form-control-lg" />
+
+                            </div>
+
+
+
+                            <div class="col-md-6">
+
+                                <label asp-for="WorkEnd"
+                                       class="form-label fw-semibold">
+                                </label>
+
+
+                                <input asp-for="WorkEnd"
+                                       type="time"
+                                       class="form-control form-control-lg" />
+
+                            </div>
+
+
+                        </div>
+
+
+
+
+                        <hr />
+
+
+                        <h5 class="fw-bold mb-3">
+
+                            Предлагани услуги
+
+                        </h5>
+
+
+                        <div class="row">
+
+
+                            @for (int i = 0; i < Model.Services.Count; i++)
+                            {
+
+                                <div class="col-md-6 mb-3">
+
+
+                                    <div class="border rounded p-3">
+
+
+                                        <div class="form-check">
+
+
+                                            <input asp-for="Services[i].Selected"
+                                                   class="form-check-input" />
+
+
+                                            <input asp-for="Services[i].BeautyServiceId"
+                                                   type="hidden" />
+
+
+                                            <input asp-for="Services[i].BeautyServiceName"
+                                                   type="hidden" />
+
+
+                                            <label class="form-check-label fw-semibold">
+
+                                                @Model.Services[i].BeautyServiceName
+
+                                            </label>
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+                            }
+
+
+                        </div>
+
+
+
+                        <div class="d-flex justify-content-between mt-4">
+
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-secondary">
+
+                                Назад
+
+                            </a>
+
+
+                            <button class="btn btn-dark px-4">
+
+                                Запази
+
+                            </button>
+
+
+                        </div>
+
+
+
+                    </form>
+
 
                 </div>
 
-                <br />
 
-                <button class="btn btn-success">
+            </div>
 
-                    Запази
-
-                </button>
-
-                <a asp-controller="User"
-                   asp-action="Index"
-                   class="btn btn-secondary">
-
-                    Назад
-
-                </a>
-
-            </form>
 
         </div>
+
 
     </div>
 
+
 </div>
+
 
 @section Scripts {
 

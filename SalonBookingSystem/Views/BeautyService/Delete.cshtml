@@ -1,52 +1,78 @@
 ﻿@model SalonBookingSystem.Models.BeautyService
 
-<div class="container mt-5">
+@{
+    ViewData["Title"] = "Изтриване";
+}
 
-	<div class="alert alert-danger">
+<div class="container py-5">
 
-		<h3>Сигурни ли сте?</h3>
+    <div class="row justify-content-center">
 
-		<hr />
+        <div class="col-lg-6">
 
-		<p>
 
-			<b>@Model.Name</b>
+            <div class="card border-0 shadow-sm">
 
-		</p>
 
-		<p>
+                <div class="card-body p-5 text-center">
 
-			Цена:
 
-			<b>@Model.Price лв.</b>
+                    <h2 class="fw-bold mb-3">
 
-		</p>
+                        Потвърждение
 
-		<p>
+                    </h2>
 
-			Продължителност:
-			<b>@Model.DurationMinutes минути</b>
-		</p>
 
-		<form asp-action="Delete">
+                    <p class="text-muted">
 
-			<input type="hidden" asp-for="Id" />
+                        Сигурни ли сте, че искате да изтриете тази услуга?
 
-			<button class="btn btn-danger">
+                    </p>
 
-				Изтрий
 
-			</button>
+                    <h4 class="mb-4">
 
-			<a asp-action="Index"
-			   class="btn btn-secondary">
+                        @Model.Name
 
-				Отказ
+                    </h4>
 
-			</a>
 
-		</form>
+                    <form asp-action="Delete">
 
-	</div>
+
+                        <input type="hidden"
+                               asp-for="Id" />
+
+
+                        <button class="btn btn-danger px-4">
+
+                            Изтрий
+
+                        </button>
+
+
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
+
+                            Отказ
+
+                        </a>
+
+
+                    </form>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
 
 </div>

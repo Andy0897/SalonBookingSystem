@@ -1,74 +1,94 @@
 ﻿@model SalonBookingSystem.Models.BeautyService
 
-<div class="container mt-5">
+@{
+    ViewData["Title"] = "Детайли";
+}
 
-	<div class="card shadow">
+<div class="container py-5">
 
-		<div class="card-header bg-primary text-white">
+    <div class="row justify-content-center">
 
-			<h3>Информация</h3>
+        <div class="col-lg-7">
 
-		</div>
+            <div class="card border-0 shadow-sm">
 
-		<div class="card-body">
+                <div class="card-body p-5">
 
-			<dl class="row">
 
-				<dt class="col-sm-4">
+                    <div class="text-center mb-4">
 
-					Име
+                        <h2 class="fw-bold">
+                            @Model.Name
+                        </h2>
 
-				</dt>
+                        <p class="text-muted">
+                            Информация за услугата
+                        </p>
 
-				<dd class="col-sm-8">
+                    </div>
 
-					@Model.Name
 
-				</dd>
+                    <div class="list-group list-group-flush mb-4">
 
-				<dt class="col-sm-4">
 
-					Продължителност
+                        <div class="list-group-item d-flex justify-content-between">
 
-				</dt>
+                            <span class="fw-semibold">
+                                Продължителност
+                            </span>
 
-				<dd class="col-sm-8">
+                            <span>
+                                @Model.DurationMinutes минути
+                            </span>
 
-					@Model.DurationMinutes минути
+                        </div>
 
-				</dd>
 
-				<dt class="col-sm-4">
+                        <div class="list-group-item d-flex justify-content-between">
 
-					Цена
+                            <span class="fw-semibold">
+                                Цена
+                            </span>
 
-				</dt>
+                            <span>
+                                @Model.Price лв.
+                            </span>
 
-				<dd class="col-sm-8">
+                        </div>
 
-					@Model.Price лв.
 
-				</dd>
+                    </div>
 
-			</dl>
 
-			<a asp-action="Edit"
-			   asp-route-id="@Model.Id"
-			   class="btn btn-warning">
+                    <div class="d-flex justify-content-between">
 
-				Редакция
 
-			</a>
+                        <a asp-action="Index"
+                           class="btn btn-outline-secondary">
 
-			<a asp-action="Index"
-			   class="btn btn-secondary">
+                            Назад
 
-				Назад
+                        </a>
 
-			</a>
 
-		</div>
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-dark">
 
-	</div>
+                            Редакция
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>

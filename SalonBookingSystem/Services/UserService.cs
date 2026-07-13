@@ -64,5 +64,36 @@ namespace SalonBookingSystem.Services
         {
             return await _userRepository.GetByIdAsync(id);
         }
+
+        public async Task<ProfileViewModel?> GetProfileAsync(int userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+
+            if (user == null)
+                return null;
+
+            return new ProfileViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
+            };
+        }
+
+        public async Task UpdateProfileAsync(ProfileViewModel model)
+        {
+            var user = await _userRepository.GetByIdAsync(model.Id);
+
+            if (user == null)
+                throw new Exception("Потребителят не съществува.");
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+
+            await _userRepository.UpdateAsync(user);
+        }
     }
 }

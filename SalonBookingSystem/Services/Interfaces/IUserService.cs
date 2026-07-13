@@ -13,5 +13,9 @@ namespace SalonBookingSystem.Services.Interfaces
         Task<List<ApplicationUser>> GetAllAsync();
 
         Task<ApplicationUser?> GetByIdAsync(int id);
+
+        Task<ProfileViewModel?> GetProfileAsync(int userId);
+
+        Task UpdateProfileAsync(ProfileViewModel model);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SalonBookingSystem.Models;
+using SalonBookingSystem.Models.ViewModels;
 
 namespace SalonBookingSystem.Services.Interfaces
 {
@@ -8,10 +9,16 @@ namespace SalonBookingSystem.Services.Interfaces
 
         Task<Employee?> GetByIdAsync(int id);
 
-        Task CreateAsync(Employee employee);
+        Task<EmployeeFormViewModel?> GetCreateModelAsync(int userId);
 
-        Task UpdateAsync(Employee employee);
+        Task<EmployeeFormViewModel?> GetEditModelAsync(int employeeId);
+
+        Task CreateAsync(EmployeeFormViewModel model);
+
+        Task UpdateAsync(EmployeeFormViewModel model);
 
         Task DeleteAsync(int id);
+
+        Task<Employee?> GetByUserIdAsync(int userId);
     }
 }

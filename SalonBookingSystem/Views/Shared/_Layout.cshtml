@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿@* <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -65,4 +65,372 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+</html> *@
+
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Beauty Salon</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+<header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+
+        <div class="container">
+
+            <a class="navbar-brand"
+               asp-controller="Home"
+               asp-action="Index">
+
+                💇 Beauty Salon
+
+            </a>
+
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbar">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse"
+                 id="navbar">
+
+                <ul class="navbar-nav me-auto">
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           asp-controller="Home"
+                           asp-action="Index">
+
+                            Начало
+
+                        </a>
+
+                    </li>
+
+                    @if (!User.IsInRole("Admin")) {
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           asp-controller="Home"
+                           asp-action="Services">
+
+                            Услуги
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           asp-controller="Home"
+                           asp-action="Employees">
+
+                            Специалисти
+
+                        </a>
+
+                    </li>
+                    }
+
+                    @if (User.IsInRole("Client"))
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Reservation"
+                               asp-action="Create">
+
+                                Запази час
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Reservation"
+                               asp-action="MyReservations">
+
+                                Моите резервации
+
+                            </a>
+
+                        </li>
+                    }
+
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Employee"
+                               asp-action="MyReservations">
+
+                                Моите резервации
+
+                            </a>
+
+                        </li>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Dashboard"
+                               asp-action="Index">
+
+                                Dashboard
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="User"
+                               asp-action="Index">
+
+                                Потребители
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Employee"
+                               asp-action="Index">
+
+                                Служители
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="BeautyService"
+                               asp-action="Index">
+
+                                Услуги
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Reservation"
+                               asp-action="Index">
+
+                                Резервации
+
+                            </a>
+
+                        </li>
+                    }
+
+                </ul>
+
+                <ul class="navbar-nav">
+
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Account"
+                               asp-action="Profile">
+
+                                @User.Identity.Name
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link text-warning"
+                               asp-controller="Account"
+                               asp-action="Logout">
+
+                                Изход
+
+                            </a>
+
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Account"
+                               asp-action="Login">
+
+                                Вход
+
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Account"
+                               asp-action="Register">
+
+                                Регистрация
+
+                            </a>
+
+                        </li>
+                    }
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+</header>
+
+<main>
+
+    <div class="container mt-4">
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show">
+
+                @TempData["Success"]
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show">
+
+                @TempData["Error"]
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+        }
+
+        @RenderBody()
+
+    </div>
+
+</main>
+
+<footer class="bg-dark text-light mt-5">
+
+    <div class="container py-4">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <h5>
+
+                    Beauty Salon
+
+                </h5>
+
+                <p>
+
+                    Онлайн система за резервации на козметични услуги.
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 text-md-end">
+
+                <p class="mb-1">
+
+                    Работно време
+
+                </p>
+
+                <p>
+
+                    Понеделник - Петък
+
+                    <br />
+
+                    09:00 - 18:00
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <hr />
+
+        <div class="text-center">
+
+            © @DateTime.Now.Year - Beauty Salon
+
+        </div>
+
+    </div>
+
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="~/js/site.js"
+        asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
 </html>
