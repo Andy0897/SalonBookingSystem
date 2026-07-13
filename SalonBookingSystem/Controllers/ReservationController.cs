@@ -31,7 +31,7 @@ namespace SalonBookingSystem.Controllers
             return View(reservations);
         }
 
-
+        [Authorize(Roles = "Client")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -40,7 +40,7 @@ namespace SalonBookingSystem.Controllers
             return View(model);
         }
 
-
+        [Authorize(Roles = "Client")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ReservationFormViewModel model)
@@ -88,7 +88,7 @@ namespace SalonBookingSystem.Controllers
                 nameof(MyReservations));
         }
 
-
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> MyReservations()
         {
             var userIdString = User.FindFirstValue(

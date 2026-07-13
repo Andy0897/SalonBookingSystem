@@ -28,7 +28,7 @@
 
 
 
-        @if (User.Identity!.IsAuthenticated)
+        @if (User.Identity!.IsAuthenticated && User.IsInRole("Client"))
         {
 
             <a asp-controller="Reservation"
@@ -40,7 +40,7 @@
             </a>
 
         }
-        else
+        else if (!User.Identity!.IsAuthenticated)
         {
 
             <a asp-controller="Account"
