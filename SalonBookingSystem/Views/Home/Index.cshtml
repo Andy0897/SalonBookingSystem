@@ -2,259 +2,96 @@
 
 @{
     ViewData["Title"] = "Beauty Salon";
+
+    var features = new[]
+    {
+        ("bi-people", "Професионален екип", "Нашите специалисти имат богат опит."),
+        ("bi-calendar-check", "Онлайн резервации", "Запазете час бързо и удобно."),
+        ("bi-gem", "Качествени услуги", "Работим с професионални продукти.")
+    };
 }
 
+<div class="py-3">
 
-
-<div class="container py-5">
-
-
-
-    <section class="text-center py-5 mb-5 bg-light rounded-4 shadow-sm">
-
-
-        <h1 class="display-3 fw-bold">
-
-            Beauty Salon
-
+    <section class="hero text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="bi bi-flower1" style="color: var(--salon-primary)"></i> Beauty Salon
         </h1>
-
-
-        <p class="lead text-muted">
-
+        <p class="lead text-muted mb-4">
             Професионални козметични услуги и лесни онлайн резервации.
-
         </p>
-
-
 
         @if (User.Identity!.IsAuthenticated && User.IsInRole("Client"))
         {
-
-            <a asp-controller="Reservation"
-               asp-action="Create"
-               class="btn btn-dark btn-lg px-5">
-
-                Запази час
-
+            <a asp-controller="Reservation" asp-action="Create" class="btn btn-salon btn-lg px-5">
+                <i class="bi bi-calendar-plus"></i> Запази час
             </a>
-
         }
         else if (!User.Identity!.IsAuthenticated)
         {
-
-            <a asp-controller="Account"
-               asp-action="Login"
-               class="btn btn-dark btn-lg px-5">
-
+            <a asp-controller="Account" asp-action="Login" class="btn btn-salon btn-lg px-5">
                 Влез и запази час
-
             </a>
-
         }
-
-
     </section>
 
+    <div class="row g-4 mb-5">
+        @foreach (var item in features)
+        {
+            <div class="col-md-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body p-4">
+                        <i class="bi @item.Item1 feature-icon"></i>
+                        <h5 class="fw-bold mt-2">@item.Item2</h5>
+                        <p class="text-muted mb-0">@item.Item3</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 
+    <div class="d-flex justify-content-between align-items-end">
+        <h2 class="section-title">Нашите услуги</h2>
+        <a asp-action="Services" class="text-decoration-none mb-4">Виж всички <i class="bi bi-arrow-right"></i></a>
+    </div>
 
-
-
-    <h2 class="fw-bold mb-4">
-
-        Нашите услуги
-
-    </h2>
-
-
-
-    <div class="row">
-
-
+    <div class="row g-4 mb-5">
         @foreach (var service in Model.Services)
         {
-
-            <div class="col-md-4 mb-4">
-
-
-                <div class="card border-0 shadow-sm h-100">
-
-
+            <div class="col-lg-4 col-md-6">
+                <div class="card card-hover h-100">
                     <div class="card-body p-4">
-
-
-                        <h4 class="fw-bold">
-
-                            @service.Name
-
-                        </h4>
-
-
-                        <p class="text-muted">
-
-                            Професионална услуга от нашия екип.
-
-                        </p>
-
-
+                        <h5 class="fw-bold">@service.Name</h5>
+                        <p class="text-muted small mb-3">Професионална услуга от нашия екип.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="price">@service.Price лв.</span>
+                            <span class="text-muted small"><i class="bi bi-clock"></i> @service.DurationMinutes мин.</span>
+                        </div>
                     </div>
-
-
-                    <div class="card-footer bg-white border-0 p-4">
-
-
-                        <strong>
-
-                            @service.Price лв.
-
-                        </strong>
-
-                        <br />
-
-                        <span class="text-muted">
-
-                            @service.DurationMinutes минути
-
-                        </span>
-
-
-                    </div>
-
-
                 </div>
-
-
             </div>
-
         }
-
-
     </div>
 
+    <div class="d-flex justify-content-between align-items-end">
+        <h2 class="section-title">Нашите специалисти</h2>
+        <a asp-action="Employees" class="text-decoration-none mb-4">Виж екипа <i class="bi bi-arrow-right"></i></a>
+    </div>
 
-
-
-
-    <h2 class="fw-bold mt-5 mb-4">
-
-        Нашите специалисти
-
-    </h2>
-
-
-
-    <div class="row">
-
-
+    <div class="row g-4">
         @foreach (var employee in Model.Employees)
         {
-
-
-            <div class="col-md-3 mb-4">
-
-
-                <div class="card border-0 shadow-sm text-center h-100">
-
-
-                    <div class="card-body">
-
-
-                        <h5 class="fw-bold">
-
-                            @employee.User.FirstName
-                            @employee.User.LastName
-
-                        </h5>
-
-
-                        <p class="text-muted">
-
-                            @employee.Specialty
-
-                        </p>
-
-
-                        <small>
-
-                            @employee.WorkStart -
-                            @employee.WorkEnd
-
-                        </small>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-        }
-
-
-    </div>
-
-
-
-
-
-
-    <div class="row mt-5">
-
-
-        @foreach (var item in new[]
-        {
-("Професионален екип",
-"Нашите специалисти имат богат опит."),
-
-("Онлайн резервации",
-"Запазете час бързо и удобно."),
-
-("Качествени услуги",
-"Работим с професионални продукти.")
-})
-        {
-
-
-            <div class="col-md-4 mb-4">
-
-
-                <div class="card border-0 shadow-sm text-center h-100">
-
-
+            <div class="col-lg-3 col-md-6">
+                <div class="card card-hover text-center h-100">
                     <div class="card-body p-4">
-
-
-                        <h5 class="fw-bold">
-
-                            @item.Item1
-
-                        </h5>
-
-
-                        <p class="text-muted">
-
-                            @item.Item2
-
-                        </p>
-
-
+                        <div class="avatar avatar-sm">@employee.User.FirstName.Substring(0, 1)</div>
+                        <h6 class="fw-bold mb-1">@employee.User.FirstName @employee.User.LastName</h6>
+                        <p class="text-muted small mb-2">@employee.Specialty</p>
+                        <small class="text-muted"><i class="bi bi-clock"></i> @employee.WorkStart - @employee.WorkEnd</small>
                     </div>
-
-
                 </div>
-
-
             </div>
-
-
         }
-
-
     </div>
-
-
 
 </div>

@@ -4,259 +4,72 @@
     ViewData["Title"] = "Служители";
 }
 
-<div class="container py-5">
+<div class="py-3">
 
-
-    <div class="mb-4">
-
-
-        <h2 class="fw-bold mb-1">
-
-            Служители
-
-        </h2>
-
-
-        <p class="text-muted">
-
-            Управление на служителите и техните услуги.
-
-        </p>
-
-
+    <div class="page-header">
+        <h2 class="fw-bold mb-1">Служители</h2>
+        <p>Управление на служителите и техните услуги.</p>
     </div>
 
+    <div class="card overflow-hidden">
 
-
-
-    <div class="card border-0 shadow-sm">
-
-
-        <div class="card-body p-0">
-
-
-            @if (!Model.Any())
-            {
-
-                <div class="text-center p-5">
-
-
-                    <h5 class="fw-bold">
-
-                        Няма добавени служители
-
-                    </h5>
-
-
-                    <p class="text-muted mb-0">
-
-                        Все още няма създадени служители.
-
-                    </p>
-
-
-                </div>
-
-            }
-            else
-            {
-
-
-                <div class="table-responsive">
-
-
-                    <table class="table table-hover align-middle mb-0">
-
-
-                        <thead class="table-light">
-
-
+        @if (!Model.Any())
+        {
+            <div class="text-center p-5">
+                <i class="bi bi-person-x fs-1 text-muted"></i>
+                <h5 class="fw-bold mt-2">Няма добавени служители</h5>
+                <p class="text-muted mb-0">Служител се добавя от страницата „Потребители“.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Име</th>
+                            <th>Специалност</th>
+                            <th>Работно време</th>
+                            <th>Услуги</th>
+                            <th class="text-end pe-4">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var employee in Model)
+                        {
                             <tr>
-
-
-                                <th class="ps-4">
-
-                                    Име
-
-                                </th>
-
-
-                                <th>
-
-                                    Специалност
-
-                                </th>
-
-
-                                <th>
-
-                                    Работно време
-
-                                </th>
-
-
-                                <th>
-
-                                    Услуги
-
-                                </th>
-
-
-                                <th class="text-end pe-4">
-
-                                    Действия
-
-                                </th>
-
-
-                            </tr>
-
-
-                        </thead>
-
-
-
-                        <tbody>
-
-
-
-                            @foreach (var employee in Model)
-                            {
-
-                                <tr>
-
-
-
-                                    <td class="ps-4">
-
-
-                                        <div class="fw-semibold">
-
-                                            @employee.User.FirstName
-                                            @employee.User.LastName
-
-                                        </div>
-
-
-                                    </td>
-
-
-
-
-                                    <td>
-
-
-                                        @employee.Specialty
-
-
-                                    </td>
-
-
-
-
-                                    <td>
-
-
-                                        <span class="text-muted">
-
-                                            @employee.WorkStart -
-                                            @employee.WorkEnd
-
+                                <td class="ps-4 fw-semibold">@employee.User.FirstName @employee.User.LastName</td>
+                                <td>@employee.Specialty</td>
+                                <td class="text-muted text-nowrap">
+                                    <i class="bi bi-clock me-1"></i> @employee.WorkStart - @employee.WorkEnd
+                                </td>
+                                <td>
+                                    @foreach (var service in employee.EmployeeServices)
+                                    {
+                                        <span class="badge rounded-pill bg-light text-dark border me-1 mb-1">
+                                            @service.BeautyService.Name
                                         </span>
-
-
-                                    </td>
-
-
-
-
-                                    <td>
-
-
-                                        @foreach (var service in employee.EmployeeServices)
-                                        {
-
-                                            <span class="badge rounded-pill bg-light text-dark border me-1 mb-1">
-
-
-                                                @service.BeautyService.Name
-
-
-                                            </span>
-
-                                        }
-
-
-                                    </td>
-
-
-
-
-                                    <td class="text-end pe-4">
-
-
-
-                                        <a asp-action="Edit"
-                                           asp-route-id="@employee.Id"
-                                           class="btn btn-outline-dark btn-sm">
-
-
-                                            Редакция
-
-
-                                        </a>
-
-
-
-
-                                        <form asp-action="Delete"
-                                              asp-route-id="@employee.Id"
-                                              method="post"
-                                              class="d-inline">
-
-
-                                            <button class="btn btn-outline-danger btn-sm"
-                                                    onclick="return confirm('Сигурни ли сте?')">
-
-
-                                                Изтрий
-
-
-                                            </button>
-
-
-                                        </form>
-
-
-
-                                    </td>
-
-
-
-                                </tr>
-
-
-                            }
-
-
-
-                        </tbody>
-
-
-                    </table>
-
-
-                </div>
-
-
-            }
-
-
-
-        </div>
-
+                                    }
+                                </td>
+                                <td class="text-end pe-4 text-nowrap">
+                                    <a asp-action="Edit" asp-route-id="@employee.Id"
+                                       class="btn btn-outline-salon btn-sm" title="Редакция">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@employee.Id" method="post" class="d-inline">
+                                        <button class="btn btn-outline-danger btn-sm" title="Изтрий"
+                                                onclick="return confirm('Сигурни ли сте, че искате да изтриете служителя?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
 
     </div>
-
 
 </div>

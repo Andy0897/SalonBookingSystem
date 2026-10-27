@@ -4,322 +4,70 @@
     ViewData["Title"] = "Всички резервации";
 }
 
+<div class="py-3">
 
-<div class="container py-5">
-
-
-    <div class="mb-4">
-
-        <h2 class="fw-bold">
-
-            Всички резервации
-
-        </h2>
-
-
-        <p class="text-muted">
-
-            Управление на всички направени резервации.
-
-        </p>
-
+    <div class="page-header">
+        <h2 class="fw-bold mb-1">Всички резервации</h2>
+        <p>Управление на всички направени резервации.</p>
     </div>
 
+    <div class="card overflow-hidden">
 
-
-
-    <div class="card border-0 shadow-sm">
-
-
-        <div class="card-body p-0">
-
-
-            @if (!Model.Any())
-            {
-
-                <div class="text-center p-5">
-
-
-                    <h5 class="fw-bold">
-
-                        Няма резервации
-
-                    </h5>
-
-
-                    <p class="text-muted">
-
-                        Все още няма създадени резервации.
-
-                    </p>
-
-
-                </div>
-
-            }
-            else
-            {
-
-
-                <div class="table-responsive">
-
-
-                    <table class="table table-hover align-middle mb-0">
-
-
-                        <thead class="table-light">
-
-
+        @if (!Model.Any())
+        {
+            <div class="text-center p-5">
+                <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                <h5 class="fw-bold mt-2">Няма резервации</h5>
+                <p class="text-muted mb-0">Все още няма създадени резервации.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Клиент</th>
+                            <th>Услуга</th>
+                            <th>Служител</th>
+                            <th>Дата</th>
+                            <th>Час</th>
+                            <th>Статус</th>
+                            <th class="pe-4">Промяна на статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var reservation in Model)
+                        {
                             <tr>
+                                <td class="ps-4 fw-semibold">@reservation.Client.FirstName @reservation.Client.LastName</td>
+                                <td>@reservation.BeautyService.Name</td>
+                                <td>@reservation.Employee.User.FirstName @reservation.Employee.User.LastName</td>
+                                <td>@reservation.ReservationDate.ToString("dd.MM.yyyy")</td>
+                                <td class="text-nowrap">@reservation.StartTime - @reservation.EndTime</td>
+                                <td><partial name="_StatusBadge" model="reservation.Status" /></td>
+                                <td class="pe-4">
+                                    <form asp-action="ChangeStatus" method="post" class="d-flex gap-2">
+                                        <input type="hidden" name="id" value="@reservation.Id" />
 
+                                        <select name="status" class="form-select form-select-sm" style="min-width: 130px">
+                                            <option value="0" selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Reserved)">Резервирана</option>
+                                            <option value="1" selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Completed)">Завършена</option>
+                                            <option value="2" selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled)">Отказана</option>
+                                        </select>
 
-                                <th class="ps-4">
-                                    Клиент
-                                </th>
-
-
-                                <th>
-                                    Услуга
-                                </th>
-
-
-                                <th>
-                                    Служител
-                                </th>
-
-
-                                <th>
-                                    Дата
-                                </th>
-
-
-                                <th>
-                                    Час
-                                </th>
-
-
-                                <th>
-                                    Статус
-                                </th>
-
-
-                                <th class="pe-4">
-                                    Действия
-                                </th>
-
-
+                                        <button class="btn btn-salon btn-sm" title="Запази">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
-
-
-                        </thead>
-
-
-
-                        <tbody>
-
-
-
-                            @foreach (var reservation in Model)
-                            {
-
-
-                                <tr>
-
-
-                                    <td class="ps-4 fw-semibold">
-
-
-                                        @reservation.Client.FirstName
-                                        @reservation.Client.LastName
-
-
-                                    </td>
-
-
-
-
-                                    <td>
-
-
-                                        @reservation.BeautyService.Name
-
-
-                                    </td>
-
-
-
-
-                                    <td>
-
-
-                                        @reservation.Employee.User.FirstName
-                                        @reservation.Employee.User.LastName
-
-
-                                    </td>
-
-
-
-
-                                    <td>
-
-
-                                        @reservation.ReservationDate
-
-
-                                    </td>
-
-
-
-
-                                    <td>
-
-
-                                        @reservation.StartTime -
-                                        @reservation.EndTime
-
-
-                                    </td>
-
-
-
-
-
-                                    <td>
-
-
-                                        @switch (reservation.Status)
-                                        {
-
-                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Reserved:
-
-                                                <span class="badge rounded-pill bg-warning text-dark">
-
-                                                    Резервирана
-
-                                                </span>
-
-                                                break;
-
-
-
-                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Completed:
-
-                                                <span class="badge rounded-pill bg-success">
-
-                                                    Завършена
-
-                                                </span>
-
-                                                break;
-
-
-
-                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled:
-
-                                                <span class="badge rounded-pill bg-danger">
-
-                                                    Отказана
-
-                                                </span>
-
-                                                break;
-
-                                        }
-
-
-                                    </td>
-
-
-
-
-
-                                    <td class="pe-4">
-
-
-                                        <form asp-action="ChangeStatus"
-                                              method="post"
-                                              class="d-flex gap-2">
-
-
-                                            <input type="hidden"
-                                                   name="id"
-                                                   value="@reservation.Id" />
-
-
-
-                                            <select name="status"
-                                                    class="form-select form-select-sm">
-
-
-                                                <option value="0"
-                                                        selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Reserved)">
-
-                                                    Резервирана
-
-                                                </option>
-
-
-
-                                                <option value="1"
-                                                        selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Completed)">
-
-                                                    Завършена
-
-                                                </option>
-
-
-
-                                                <option value="2"
-                                                        selected="@(reservation.Status == SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled)">
-
-                                                    Отказана
-
-                                                </option>
-
-
-                                            </select>
-
-
-
-
-                                            <button class="btn btn-dark btn-sm">
-
-                                                Запази
-
-                                            </button>
-
-
-                                        </form>
-
-
-                                    </td>
-
-
-
-                                </tr>
-
-
-                            }
-
-
-
-                        </tbody>
-
-
-                    </table>
-
-
-                </div>
-
-
-            }
-
-
-        </div>
-
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
 
     </div>
-
 
 </div>

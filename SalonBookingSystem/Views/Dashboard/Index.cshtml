@@ -2,380 +2,86 @@
 
 @{
     ViewData["Title"] = "Административен панел";
+
+    var stats = new[]
+    {
+        ("Потребители", Model.UsersCount, "bi-people"),
+        ("Служители", Model.EmployeesCount, "bi-person-badge"),
+        ("Услуги", Model.ServicesCount, "bi-stars"),
+        ("Предстоящи резервации", Model.ReservationsCount, "bi-calendar-check")
+    };
 }
 
-<div class="container py-5">
+<div class="py-3">
 
-
-    <div class="mb-4">
-
-        <h2 class="fw-bold mb-1">
-
-            Административен панел
-
-        </h2>
-
-        <p class="text-muted">
-
-            Общ преглед на системата и последните резервации.
-
-        </p>
-
+    <div class="page-header">
+        <h2 class="fw-bold mb-1">Административен панел</h2>
+        <p>Общ преглед на системата и последните резервации.</p>
     </div>
-
-
 
     <div class="row g-4">
-
-
-        <div class="col-lg-3 col-md-6">
-
-
-            <div class="card border-0 shadow-sm h-100">
-
-
-                <div class="card-body p-4">
-
-
-                    <p class="text-muted mb-2">
-
-                        Потребители
-
-                    </p>
-
-
-                    <h1 class="fw-bold mb-0">
-
-                        @Model.UsersCount
-
-                    </h1>
-
-
+        @foreach (var stat in stats)
+        {
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100">
+                    <div class="card-body p-4 d-flex align-items-center gap-3">
+                        <div class="stat-icon"><i class="bi @stat.Item3"></i></div>
+                        <div>
+                            <div class="text-muted small">@stat.Item1</div>
+                            <div class="fs-2 fw-bold lh-1">@stat.Item2</div>
+                        </div>
+                    </div>
                 </div>
-
-
             </div>
-
-
-        </div>
-
-
-
-        <div class="col-lg-3 col-md-6">
-
-
-            <div class="card border-0 shadow-sm h-100">
-
-
-                <div class="card-body p-4">
-
-
-                    <p class="text-muted mb-2">
-
-                        Служители
-
-                    </p>
-
-
-                    <h1 class="fw-bold mb-0">
-
-                        @Model.EmployeesCount
-
-                    </h1>
-
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-
-
-        <div class="col-lg-3 col-md-6">
-
-
-            <div class="card border-0 shadow-sm h-100">
-
-
-                <div class="card-body p-4">
-
-
-                    <p class="text-muted mb-2">
-
-                        Услуги
-
-                    </p>
-
-
-                    <h1 class="fw-bold mb-0">
-
-                        @Model.ServicesCount
-
-                    </h1>
-
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-
-
-        <div class="col-lg-3 col-md-6">
-
-
-            <div class="card border-0 shadow-sm h-100">
-
-
-                <div class="card-body p-4">
-
-
-                    <p class="text-muted mb-2">
-
-                        Предстоящи резервации
-
-                    </p>
-
-
-                    <h1 class="fw-bold mb-0">
-
-                        @Model.ReservationsCount
-
-                    </h1>
-
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-
+        }
     </div>
 
+    <div class="card mt-4 overflow-hidden">
 
+        <div class="card-body p-4 pb-3">
+            <h4 class="fw-bold mb-1">Последни резервации</h4>
+            <p class="text-muted mb-0">Най-новите записи в системата.</p>
+        </div>
 
-
-    <div class="card border-0 shadow-sm mt-5">
-
-
-        <div class="card-body p-4">
-
-
-            <div class="d-flex justify-content-between align-items-center mb-4">
-
-
-                <div>
-
-                    <h4 class="fw-bold mb-1">
-
-                        Последни резервации
-
-                    </h4>
-
-
-                    <p class="text-muted mb-0">
-
-                        Най-новите записи в системата.
-
-                    </p>
-
-                </div>
-
-
+        @if (!Model.LastReservations.Any())
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                <h5 class="fw-bold mt-2">Няма резервации</h5>
+                <p class="text-muted mb-0">Все още няма създадени резервации.</p>
             </div>
-
-
-
-
-            @if (!Model.LastReservations.Any())
-            {
-
-                <div class="text-center py-5">
-
-
-                    <h5 class="fw-bold">
-
-                        Няма резервации
-
-                    </h5>
-
-
-                    <p class="text-muted mb-0">
-
-                        Все още няма създадени резервации.
-
-                    </p>
-
-
-                </div>
-
-            }
-            else
-            {
-
-
-                <div class="table-responsive">
-
-
-                    <table class="table table-hover align-middle">
-
-
-                        <thead class="table-light">
-
-
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Клиент</th>
+                            <th>Служител</th>
+                            <th>Услуга</th>
+                            <th>Дата</th>
+                            <th>Час</th>
+                            <th class="pe-4">Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var reservation in Model.LastReservations)
+                        {
                             <tr>
-
-                                <th>
-                                    Клиент
-                                </th>
-
-                                <th>
-                                    Служител
-                                </th>
-
-                                <th>
-                                    Услуга
-                                </th>
-
-                                <th>
-                                    Дата
-                                </th>
-
-                                <th>
-                                    Час
-                                </th>
-
-                                <th>
-                                    Статус
-                                </th>
-
+                                <td class="ps-4 fw-semibold">@reservation.Client.FirstName @reservation.Client.LastName</td>
+                                <td>@reservation.Employee.User.FirstName @reservation.Employee.User.LastName</td>
+                                <td>@reservation.BeautyService.Name</td>
+                                <td>@reservation.ReservationDate.ToString("dd.MM.yyyy")</td>
+                                <td class="text-nowrap">@reservation.StartTime - @reservation.EndTime</td>
+                                <td class="pe-4"><partial name="_StatusBadge" model="reservation.Status" /></td>
                             </tr>
-
-
-                        </thead>
-
-
-                        <tbody>
-
-
-                            @foreach (var reservation in Model.LastReservations)
-                            {
-
-                                <tr>
-
-
-                                    <td class="fw-semibold">
-
-                                        @reservation.Client.FirstName
-                                        @reservation.Client.LastName
-
-                                    </td>
-
-
-                                    <td>
-
-                                        @reservation.Employee.User.FirstName
-                                        @reservation.Employee.User.LastName
-
-                                    </td>
-
-
-                                    <td>
-
-                                        @reservation.BeautyService.Name
-
-                                    </td>
-
-
-                                    <td>
-
-                                        @reservation.ReservationDate.ToString("dd.MM.yyyy")
-
-                                    </td>
-
-
-                                    <td>
-
-                                        @reservation.StartTime -
-                                        @reservation.EndTime
-
-                                    </td>
-
-
-                                    <td>
-
-
-                                        @switch (reservation.Status)
-                                        {
-
-                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Reserved:
-
-                                                <span class="badge rounded-pill bg-warning text-dark">
-
-                                                    Резервирана
-
-                                                </span>
-
-                                                break;
-
-
-                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Completed:
-
-                                                <span class="badge rounded-pill bg-success">
-
-                                                    Завършена
-
-                                                </span>
-
-                                                break;
-
-
-                                            case SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled:
-
-                                                <span class="badge rounded-pill bg-danger">
-
-                                                    Отказана
-
-                                                </span>
-
-                                                break;
-
-                                        }
-
-
-                                    </td>
-
-
-                                </tr>
-
-                            }
-
-
-                        </tbody>
-
-
-                    </table>
-
-
-                </div>
-
-
-            }
-
-
-        </div>
-
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
 
     </div>
-
 
 </div>

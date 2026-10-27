@@ -4,221 +4,62 @@
     ViewData["Title"] = "Детайли за резервация";
 }
 
-<div class="container py-5">
+<div class="row justify-content-center py-4">
+    <div class="col-lg-7">
 
+        <div class="card">
+            <div class="card-body p-4 p-md-5">
 
-    <div class="row justify-content-center">
-
-
-        <div class="col-lg-7">
-
-
-            <div class="card border-0 shadow-sm">
-
-
-                <div class="card-body p-5">
-
-
-                    <div class="text-center mb-4">
-
-
-                        <h2 class="fw-bold">
-
-                            Детайли за резервацията
-
-                        </h2>
-
-
-                        <p class="text-muted">
-
-                            Информация за клиентското посещение.
-
-                        </p>
-
-
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h2 class="fw-bold mb-1">Детайли за резервацията</h2>
+                        <p class="text-muted mb-0">Информация за клиентското посещение.</p>
                     </div>
-
-
-
-
-                    <div class="list-group list-group-flush">
-
-
-                        <div class="list-group-item d-flex justify-content-between">
-
-                            <span class="fw-semibold">
-                                Клиент
-                            </span>
-
-                            <span>
-                                @Model.Client.FirstName
-                                @Model.Client.LastName
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="list-group-item d-flex justify-content-between">
-
-                            <span class="fw-semibold">
-                                Телефон
-                            </span>
-
-                            <span>
-                                @Model.Client.PhoneNumber
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="list-group-item d-flex justify-content-between">
-
-                            <span class="fw-semibold">
-                                Услуга
-                            </span>
-
-                            <span>
-                                @Model.BeautyService.Name
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="list-group-item d-flex justify-content-between">
-
-                            <span class="fw-semibold">
-                                Цена
-                            </span>
-
-                            <span>
-                                @Model.BeautyService.Price лв.
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="list-group-item d-flex justify-content-between">
-
-                            <span class="fw-semibold">
-                                Продължителност
-                            </span>
-
-                            <span>
-                                @Model.BeautyService.DurationMinutes минути
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="list-group-item d-flex justify-content-between">
-
-                            <span class="fw-semibold">
-                                Дата
-                            </span>
-
-                            <span>
-                                @Model.ReservationDate.ToString("dd.MM.yyyy")
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="list-group-item d-flex justify-content-between">
-
-                            <span class="fw-semibold">
-                                Час
-                            </span>
-
-                            <span>
-                                @Model.StartTime -
-                                @Model.EndTime
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="list-group-item d-flex justify-content-between">
-
-                            <span class="fw-semibold">
-                                Статус
-                            </span>
-
-                            <span>
-
-                                @switch (Model.Status)
-                                {
-
-                                    case SalonBookingSystem.Models.Enums.ReservationStatus.Reserved:
-
-                                        <span class="badge rounded-pill bg-warning text-dark">
-                                            Резервирана
-                                        </span>
-
-                                        break;
-
-
-                                    case SalonBookingSystem.Models.Enums.ReservationStatus.Completed:
-
-                                        <span class="badge rounded-pill bg-success">
-                                            Завършена
-                                        </span>
-
-                                        break;
-
-
-                                    case SalonBookingSystem.Models.Enums.ReservationStatus.Cancelled:
-
-                                        <span class="badge rounded-pill bg-danger">
-                                            Отказана
-                                        </span>
-
-                                        break;
-
-                                }
-
-                            </span>
-
-                        </div>
-
-
-
-                    </div>
-
-
-
-
-                    <div class="mt-4">
-
-
-                        <a asp-action="MyReservations"
-                           class="btn btn-outline-secondary">
-
-                            Назад
-
-                        </a>
-
-
-                    </div>
-
-
-
+                    <partial name="_StatusBadge" model="Model.Status" />
                 </div>
 
+                <h6 class="text-uppercase text-muted small fw-bold">Клиент</h6>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted"><i class="bi bi-person me-1"></i> Име</span>
+                        <span class="fw-semibold">@Model.Client.FirstName @Model.Client.LastName</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted"><i class="bi bi-telephone me-1"></i> Телефон</span>
+                        <span class="fw-semibold">@Model.Client.PhoneNumber</span>
+                    </li>
+                </ul>
+
+                <h6 class="text-uppercase text-muted small fw-bold">Посещение</h6>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted"><i class="bi bi-stars me-1"></i> Услуга</span>
+                        <span class="fw-semibold">@Model.BeautyService.Name</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted"><i class="bi bi-tag me-1"></i> Цена</span>
+                        <span class="fw-semibold">@Model.BeautyService.Price лв.</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted"><i class="bi bi-hourglass-split me-1"></i> Продължителност</span>
+                        <span class="fw-semibold">@Model.BeautyService.DurationMinutes минути</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted"><i class="bi bi-calendar me-1"></i> Дата</span>
+                        <span class="fw-semibold">@Model.ReservationDate.ToString("dd.MM.yyyy")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="text-muted"><i class="bi bi-clock me-1"></i> Час</span>
+                        <span class="fw-semibold">@Model.StartTime - @Model.EndTime</span>
+                    </li>
+                </ul>
+
+                <a asp-action="MyReservations" class="btn btn-outline-secondary px-4">
+                    <i class="bi bi-arrow-left"></i> Назад
+                </a>
 
             </div>
-
-
         </div>
 
-
     </div>
-
-
 </div>
